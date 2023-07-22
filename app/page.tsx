@@ -1,95 +1,89 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+'use client';
+import styles from './page.module.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useTranslation } from './hooks/useTranslator';
+import { Col, Container, Row, Button, Stack } from 'react-bootstrap';
+import { AUTO_LANGUAGE } from './utils/constants';
+import { SwapIcon } from './components/Icons';
+import LanguageSelector from './components/LanguageSelector';
+import { TranslationDirection } from './types.d';
+import Textarea from './components/Textarea';
+import { translate } from './services/translate';
+import { useEffect } from 'react';
 
 export default function Home() {
+  const {
+    originalLanguage,
+    translatedLanguage,
+    originalText,
+    translatedText,
+    isTranslating,
+    swapLanguages,
+    setOriginalLanguage,
+    setTranslatedLanguage,
+    setOriginalText,
+    setTranslatedText
+  } = useTranslation();
+
+  useEffect(() => {
+    if (originalText === '') return;
+
+    translate({ translatedLanguage, text: originalText })
+      .then((response) => {
+        if (response === null) return;
+        setTranslatedText(response);
+      })
+      .catch(() => {
+        setTranslatedText('Error!');
+      });
+  }, [originalText, translatedLanguage]);
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <Container fluid>
+        <h2>Google Translate GPT</h2>
+        <Row>
+          <Col xs="auto">
+            <Stack gap={2}>
+              <LanguageSelector
+                type={TranslationDirection.From}
+                value={originalLanguage}
+                onChange={setOriginalLanguage}
+              />
+              <Textarea
+                type={TranslationDirection.From}
+                value={originalText}
+                onChange={setOriginalText}
+              />
+            </Stack>
+          </Col>
+          <Col xs="auto">
+            <Button
+              variant="link"
+              disabled={originalLanguage === AUTO_LANGUAGE}
+              onClick={swapLanguages}
+            >
+              <SwapIcon />
+            </Button>
+          </Col>
+          <Col>
+            <Stack gap={2}>
+              <LanguageSelector
+                type={TranslationDirection.To}
+                value={translatedLanguage}
+                onChange={setTranslatedLanguage}
+              />
+              <Textarea
+                type={TranslationDirection.To}
+                value={translatedText}
+                onChange={setTranslatedText}
+                isTranslating={isTranslating}
+              />
+            </Stack>
+          </Col>
+        </Row>
+      </Container>
     </main>
-  )
+  );
 }
