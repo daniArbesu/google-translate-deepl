@@ -29,7 +29,7 @@ export default function Home() {
   useEffect(() => {
     if (originalText === '') return;
 
-    translate({ translatedLanguage, text: originalText })
+    translate({ translatedLanguage, text: originalText, originalLanguage })
       .then((response) => {
         if (response === null) return;
         setTranslatedText(response);
@@ -37,52 +37,54 @@ export default function Home() {
       .catch(() => {
         setTranslatedText('Error!');
       });
-  }, [originalText, translatedLanguage]);
+  }, [originalText, originalLanguage, translatedLanguage]);
 
   return (
     <main className={styles.main}>
       <Container fluid>
-        <h2>Google Translate GPT</h2>
-        <Row>
-          <Col xs="auto">
-            <Stack gap={2}>
-              <LanguageSelector
-                type={TranslationDirection.From}
-                value={originalLanguage}
-                onChange={setOriginalLanguage}
-              />
-              <Textarea
-                type={TranslationDirection.From}
-                value={originalText}
-                onChange={setOriginalText}
-              />
-            </Stack>
-          </Col>
-          <Col xs="auto">
-            <Button
-              variant="link"
-              disabled={originalLanguage === AUTO_LANGUAGE}
-              onClick={swapLanguages}
-            >
-              <SwapIcon />
-            </Button>
-          </Col>
-          <Col>
-            <Stack gap={2}>
-              <LanguageSelector
-                type={TranslationDirection.To}
-                value={translatedLanguage}
-                onChange={setTranslatedLanguage}
-              />
-              <Textarea
-                type={TranslationDirection.To}
-                value={translatedText}
-                onChange={setTranslatedText}
-                isTranslating={isTranslating}
-              />
-            </Stack>
-          </Col>
-        </Row>
+        <Stack gap={3}>
+          <h2>Google Translate Deepl</h2>
+          <Row>
+            <Col xs="auto">
+              <Stack gap={2}>
+                <LanguageSelector
+                  type={TranslationDirection.From}
+                  value={originalLanguage}
+                  onChange={setOriginalLanguage}
+                />
+                <Textarea
+                  type={TranslationDirection.From}
+                  value={originalText}
+                  onChange={setOriginalText}
+                />
+              </Stack>
+            </Col>
+            <Col xs="auto">
+              <Button
+                variant="link"
+                disabled={originalLanguage === AUTO_LANGUAGE}
+                onClick={swapLanguages}
+              >
+                <SwapIcon />
+              </Button>
+            </Col>
+            <Col>
+              <Stack gap={2}>
+                <LanguageSelector
+                  type={TranslationDirection.To}
+                  value={translatedLanguage}
+                  onChange={setTranslatedLanguage}
+                />
+                <Textarea
+                  type={TranslationDirection.To}
+                  value={translatedText}
+                  onChange={setTranslatedText}
+                  isTranslating={isTranslating}
+                />
+              </Stack>
+            </Col>
+          </Row>
+        </Stack>
       </Container>
     </main>
   );

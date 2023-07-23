@@ -2,6 +2,8 @@
   resize: none;
   border: 0;
   height: 200px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .formWhite {
