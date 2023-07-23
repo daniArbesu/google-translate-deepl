@@ -1,0 +1,9 @@
+.form {
+  resize: none;
+  border: 0;
+  height: 200px;
+}
+
+.formWhite {
+  background-color: #f5f5f5;
+}

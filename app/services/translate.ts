@@ -5,12 +5,11 @@ interface Props {
   text: string;
 }
 
-const apiKey = process.env.DEEPL_API_KEY;
-const translator = new deepl.Translator(apiKey);
-
 export const translate = async ({ translatedLanguage, text }: Props) => {
-  const result = await translator.translateText(text, null, translatedLanguage);
+  const result = await fetch(`/api/translate?target_lang=${translatedLanguage}&text=${text}`).then(
+    (res) => res.json()
+  );
   console.log(result);
 
-  return result.text;
+  return result;
 };

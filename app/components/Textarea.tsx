@@ -1,6 +1,7 @@
 import { Form } from 'react-bootstrap';
 import { TranslationDirection } from '../types.d';
 // import { styled } from 'styled-components';
+import styles from './style.module.css';
 import React from 'react';
 
 interface Props {
@@ -15,10 +16,7 @@ interface GetPlaceholderProps {
   isTranslating?: boolean;
 }
 /* 
-const StyledForm = styled(Form.Control)`
-  resize: none;
-  border: 0;
-  height: 200px;
+
   background-color: ${({ type }) =>
     type === TranslationDirection.From ? '' : '#f5f5f5'};
 `; */
@@ -37,6 +35,7 @@ const Textarea: React.FC<Props> = ({ type, isTranslating, value, onChange }) => 
   return (
     <Form.Control
       as="textarea"
+      className={`${styles.form}${type === TranslationDirection.From ? '' : styles.formWhite}`}
       type={type}
       autoFocus={type === TranslationDirection.From}
       disabled={type === TranslationDirection.To}
