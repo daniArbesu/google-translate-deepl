@@ -15,11 +15,6 @@ interface GetPlaceholderProps {
   type: TranslationDirection;
   isTranslating?: boolean;
 }
-/* 
-
-  background-color: ${({ type }) =>
-    type === TranslationDirection.From ? '' : '#f5f5f5'};
-`; */
 
 const getPlaceholder = ({ type, isTranslating }: GetPlaceholderProps) => {
   if (type === TranslationDirection.From) return 'Insert your text';
@@ -35,7 +30,7 @@ const Textarea: React.FC<Props> = ({ type, isTranslating, value, onChange }) => 
   return (
     <Form.Control
       as="textarea"
-      className={`${styles.form}${type === TranslationDirection.From ? '' : styles.formWhite}`}
+      className={`${styles.form} ${type === TranslationDirection.From ? '' : styles.formWhite}`}
       type={type}
       autoFocus={type === TranslationDirection.From}
       disabled={type === TranslationDirection.To}
