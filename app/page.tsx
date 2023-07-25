@@ -11,6 +11,7 @@ import { TranslationDirection } from './types.d';
 import Textarea from './components/Textarea';
 import { translate } from './services/translate';
 import { useEffect } from 'react';
+import { useDebounce } from './hooks/useDebounce';
 
 export default function Home() {
   const {
@@ -26,10 +27,12 @@ export default function Home() {
     setTranslatedText
   } = useTranslation();
 
-  useEffect(() => {
-    if (originalText === '') return;
+  const debouncedValue = useDebounce(originalText);
 
-    translate({ translatedLanguage, text: originalText, originalLanguage })
+  useEffect(() => {
+    if (debouncedValue === '') return;
+
+    translate({ translatedLanguage, text: debouncedValue, originalLanguage })
       .then((response) => {
         if (response === null) return;
         setTranslatedText(response);
@@ -37,7 +40,7 @@ export default function Home() {
       .catch(() => {
         setTranslatedText('Error!');
       });
-  }, [originalText, originalLanguage, translatedLanguage]);
+  }, [debouncedValue, originalLanguage, translatedLanguage]);
 
   return (
     <main className={styles.main}>
