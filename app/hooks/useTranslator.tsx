@@ -8,7 +8,7 @@ const initialState: State = {
   translatedLanguage: 'en',
   originalText: '',
   translatedText: '',
-  isTranslating: false,
+  isTranslating: false
 };
 
 // reducer to manage the different states
@@ -21,21 +21,31 @@ const reducer = (state: State, action: Action) => {
     return {
       ...state,
       originalLanguage: state.translatedLanguage,
-      translatedLanguage: state.originalLanguage,
+      translatedLanguage: state.originalLanguage
     };
   }
 
   if (type === 'SET_ORIGINAL_LANGUAGE') {
+    if (state.originalLanguage === action.payload) return state; // avoid retranslating when it's not necesary.
+    const isTranslating = state.originalText !== '';
+
     return {
       ...state,
       originalLanguage: action.payload,
+      translatedText: '',
+      isTranslating
     };
   }
 
   if (type === 'SET_TRANSLATED_LANGUAGE') {
+    if (state.translatedLanguage === action.payload) return state; // avoid retranslating when it's not necesary.
+    const isTranslating = state.originalText !== '';
+
     return {
       ...state,
       translatedLanguage: action.payload,
+      translatedText: '',
+      isTranslating
     };
   }
 
@@ -44,7 +54,7 @@ const reducer = (state: State, action: Action) => {
       ...state,
       translating: true,
       originalText: action.payload,
-      translatedText: '',
+      translatedText: ''
     };
   }
 
@@ -52,7 +62,7 @@ const reducer = (state: State, action: Action) => {
     return {
       ...state,
       translating: false,
-      translatedText: action.payload,
+      translatedText: action.payload
     };
   }
 
@@ -61,34 +71,34 @@ const reducer = (state: State, action: Action) => {
 
 export const useTranslation = () => {
   const [
-    {
-      originalLanguage,
-      translatedLanguage,
-      originalText,
-      translatedText,
-      isTranslating,
-    },
-    dispatch,
+    { originalLanguage, translatedLanguage, originalText, translatedText, isTranslating },
+    dispatch
+    // @ts-ignore
   ] = useReducer(reducer, initialState);
 
   // Abstracting dispatch for cleaner code
   const swapLanguages = () => {
+    // @ts-ignore
     dispatch({ type: 'SWAP_LANGUAGES' });
   };
 
   const setOriginalLanguage = (payload: OriginalLanguage) => {
+    // @ts-ignore
     dispatch({ type: 'SET_ORIGINAL_LANGUAGE', payload });
   };
 
   const setTranslatedLanguage = (payload: Language) => {
+    // @ts-ignore
     dispatch({ type: 'SET_TRANSLATED_LANGUAGE', payload });
   };
 
   const setOriginalText = (payload: string) => {
+    // @ts-ignore
     dispatch({ type: 'SET_ORIGINAL_TEXT', payload });
   };
 
   const setTranslatedText = (payload: string) => {
+    // @ts-ignore
     dispatch({ type: 'SET_TRANSLATED_TEXT', payload });
   };
 
@@ -102,6 +112,6 @@ export const useTranslation = () => {
     setOriginalLanguage,
     setTranslatedLanguage,
     setOriginalText,
-    setTranslatedText,
+    setTranslatedText
   };
 };
