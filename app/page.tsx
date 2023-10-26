@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from './hooks/useTranslator';
 import { Col, Container, Row, Button, Stack } from 'react-bootstrap';
-import { AUTO_LANGUAGE } from './utils/constants';
-import { ClipboardIcon, SwapIcon } from './components/Icons';
+import { AUTO_LANGUAGE, LANGUAGE_FOR_VOICE } from './utils/constants';
+import { ClipboardIcon, SpeakerIcon, SwapIcon } from './components/Icons';
 import LanguageSelector from './components/LanguageSelector';
 import { TranslationDirection } from './types.d';
 import Textarea from './components/Textarea';
@@ -44,6 +44,13 @@ export default function Home() {
 
   const handleClipboard = () => {
     navigator.clipboard.writeText(translatedText);
+  };
+
+  const handleSpeak = () => {
+    const utterance = new SpeechSynthesisUtterance(translatedText);
+    // @ts-ignore
+    utterance.lang = LANGUAGE_FOR_VOICE[translatedLanguage];
+    speechSynthesis.speak(utterance);
   };
 
   return (
@@ -89,13 +96,14 @@ export default function Home() {
                     onChange={setTranslatedText}
                     isTranslating={isTranslating}
                   />
-                  <Button
-                    variant="link"
-                    className={styles.clipboardButton}
-                    onClick={handleClipboard}
-                  >
-                    <ClipboardIcon />
-                  </Button>
+                  <div className={styles.buttonsDiv}>
+                    <Button variant="link" className="" onClick={handleClipboard}>
+                      <ClipboardIcon />
+                    </Button>
+                    <Button variant="link" className="" onClick={handleSpeak}>
+                      <SpeakerIcon />
+                    </Button>
+                  </div>
                 </div>
               </Stack>
             </Col>

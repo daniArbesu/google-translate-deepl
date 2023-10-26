@@ -9,8 +9,9 @@
   position: relative;
 }
 
-.clipboardButton {
+.buttonsDiv {
   position: absolute;
   left: 0;
   bottom: 0;
+  display: flex;
 }
