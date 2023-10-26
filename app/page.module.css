@@ -4,3 +4,13 @@
   padding: 2rem;
   text-align: center;
 }
+
+.translatedTextDiv {
+  position: relative;
+}
+
+.clipboardButton {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}

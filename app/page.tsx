@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from './hooks/useTranslator';
 import { Col, Container, Row, Button, Stack } from 'react-bootstrap';
 import { AUTO_LANGUAGE } from './utils/constants';
-import { SwapIcon } from './components/Icons';
+import { ClipboardIcon, SwapIcon } from './components/Icons';
 import LanguageSelector from './components/LanguageSelector';
 import { TranslationDirection } from './types.d';
 import Textarea from './components/Textarea';
@@ -41,6 +41,10 @@ export default function Home() {
         setTranslatedText('Error!');
       });
   }, [debouncedValue, originalLanguage, translatedLanguage]);
+
+  const handleClipboard = () => {
+    navigator.clipboard.writeText(translatedText);
+  };
 
   return (
     <main className={styles.main}>
@@ -78,12 +82,21 @@ export default function Home() {
                   value={translatedLanguage}
                   onChange={setTranslatedLanguage}
                 />
-                <Textarea
-                  type={TranslationDirection.To}
-                  value={translatedText}
-                  onChange={setTranslatedText}
-                  isTranslating={isTranslating}
-                />
+                <div className={styles.translatedTextDiv}>
+                  <Textarea
+                    type={TranslationDirection.To}
+                    value={translatedText}
+                    onChange={setTranslatedText}
+                    isTranslating={isTranslating}
+                  />
+                  <Button
+                    variant="link"
+                    className={styles.clipboardButton}
+                    onClick={handleClipboard}
+                  >
+                    <ClipboardIcon />
+                  </Button>
+                </div>
               </Stack>
             </Col>
           </Row>
