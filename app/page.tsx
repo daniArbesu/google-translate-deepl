@@ -65,6 +65,7 @@ export default function Home() {
                   type={TranslationDirection.From}
                   value={originalLanguage}
                   onChange={setOriginalLanguage}
+                  testid="original-language-selector"
                 />
                 <Textarea
                   type={TranslationDirection.From}
@@ -88,6 +89,7 @@ export default function Home() {
                   type={TranslationDirection.To}
                   value={translatedLanguage}
                   onChange={setTranslatedLanguage}
+                  testid="tranlate-language-selector"
                 />
                 <div className={styles.translatedTextDiv}>
                   <Textarea
